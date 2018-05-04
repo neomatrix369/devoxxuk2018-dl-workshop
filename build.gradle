@@ -2,23 +2,63 @@
  * Exercises for Devoxx UK 2018 workshop "Getting your hands dirty with deep learning in java"
  */
 
+apply plugin: 'org.ysb33r.ivypot'
+
 buildscript {
     ext {
         dl4j_version = "0.9.1"
     }
     repositories {
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        ivy {
+            url "file://${project.projectDir}/syncRepo"
+        }
+        if(!System.getenv('GRADLE_ONLINE')) {
+            mavenCentral()
+            maven {
+                url "https://oss.sonatype.org/content/repositories/snapshots"
+            }
+            maven {
+                url "https://plugins.gradle.org/m2/"
+            }
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.0-beta2'
+        classpath "org.ysb33r.gradle:ivypot:0.7"
+    }
+}
+
+repositories {
+    ivy {
+        url "file://${project.projectDir}/syncRepo"
+        layout 'gradle'
+    }
+    if(!System.getenv('GRADLE_ONLINE')) {
         mavenCentral()
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+        }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 }
 
 subprojects {
     apply plugin: "java"
     apply plugin: "application"
+    apply plugin: 'org.ysb33r.ivypot'
     repositories {
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-        mavenCentral()
-        jcenter()
+        ivy {
+            url "file://${project.projectDir}/syncRepo"
+            layout 'gradle'
+        }
+        if(!System.getenv('GRADLE_ONLINE')) {
+            maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+            maven { url "https://plugins.gradle.org/m2/" }
+            mavenCentral()
+            jcenter()
+        }
     }
     dependencies {
         compile "org.deeplearning4j:deeplearning4j-core:${dl4j_version}"
@@ -34,4 +74,18 @@ subprojects {
         compile "org.slf4j:slf4j-api:1.7.25"
         compile 'org.apache.httpcomponents:httpclient:4.3.5'
     }
+}
+
+syncRemoteRepositories {
+    repoRoot "${project.projectDir}/syncRepo"
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+        }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    includeBuildScriptDependencies = true
 }
