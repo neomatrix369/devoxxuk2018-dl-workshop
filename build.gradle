@@ -13,6 +13,7 @@ buildscript {
             url "file://${project.projectDir}/syncRepo"
         }
         if(!System.getenv('GRADLE_ONLINE')) {
+            jcenter()
             mavenCentral()
             maven {
                 url "https://oss.sonatype.org/content/repositories/snapshots"
@@ -31,7 +32,6 @@ buildscript {
 repositories {
     ivy {
         url "file://${project.projectDir}/syncRepo"
-        layout 'gradle'
     }
     if(!System.getenv('GRADLE_ONLINE')) {
         mavenCentral()
@@ -51,7 +51,6 @@ subprojects {
     repositories {
         ivy {
             url "file://${project.projectDir}/syncRepo"
-            layout 'gradle'
         }
         if(!System.getenv('GRADLE_ONLINE')) {
             maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
@@ -79,6 +78,7 @@ subprojects {
 syncRemoteRepositories {
     repoRoot "${project.projectDir}/syncRepo"
     repositories {
+        jcenter()
         mavenCentral()
         maven {
             url "https://oss.sonatype.org/content/repositories/snapshots"
