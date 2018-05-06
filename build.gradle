@@ -2,8 +2,6 @@
  * Exercises for Devoxx UK 2018 workshop "Getting your hands dirty with deep learning in java"
  */
 
-apply plugin: 'org.ysb33r.ivypot'
-
 buildscript {
     ext {
         dl4j_version = "0.9.1"
@@ -28,6 +26,8 @@ buildscript {
         classpath "org.ysb33r.gradle:ivypot:0.7"
     }
 }
+
+apply plugin: 'org.ysb33r.ivypot'
 
 repositories {
     ivy {
