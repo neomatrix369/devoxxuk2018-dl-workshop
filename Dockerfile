@@ -1,9 +1,9 @@
 FROM java:8u111-jdk
 
 RUN apt-get update && apt-get install -y \
-				maven \
+				oracle-java8-installer \
+                oracle-java8-set-default \
 				gradle \
-                curl \
                 git \
         --no-install-recommends && rm -r /var/lib/apt/lists/*
 
